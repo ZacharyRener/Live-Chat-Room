@@ -7,14 +7,41 @@ export default class Messenger extends Component {
     super(props)
     this.state = {
       posts: [],
+      live: false,
+      endpoint: '',
+      getEndpoint: '',
     }
+
     this.handleForm = this.handleForm.bind(this);
+
   }
 
   componentDidMount() {
 
     var form = document.getElementById("sendMessage");
     form.addEventListener('submit', this.handleForm);
+
+    this.setState({ live: true })
+    this.setState({ endpoint: this.state.live ? '/message' : 'http://localhost/message' })
+    this.setState({ getEndpoint: this.state.live ? '/messages' : 'http://localhost/messages' })
+
+    this.checkForPosts()
+
+  }
+
+  checkForPosts() {
+
+    setInterval( () => {
+
+      fetch("/messages") 
+      .then(response => response.json())
+      .then(data => {
+
+        this.setState({posts: data})
+
+      });
+
+    }, 100);
 
   }
 
@@ -23,21 +50,21 @@ export default class Messenger extends Component {
     event.preventDefault(); 
 
     let msg = document.querySelector("#message").value
+    let _name = document.querySelector('#name').value
 
     let userResponse = '';
 
-    let live = false;
-    let endpoint = live ? '/message' : 'http://localhost/message'
-
-    axios.post(endpoint, {
-        message: msg
+    axios.post("/message", {
+        message: msg,
+        name: _name
     })
     .then( response => {
         console.log(response);
         userResponse = response.data;
         this.setState({
           posts:[...this.state.posts, 
-            {"message": userResponse}
+            {"message": userResponse.message,
+             "name": userResponse.name }
           ]
         })
     })
@@ -53,14 +80,18 @@ export default class Messenger extends Component {
     return (
       <div>
           <form id="sendMessage">
+              <label>Name:</label>
+              <input name="name" id="name" type="text"></input><br/>
               <label>Message:</label>
-              <input name="message" id="message" type="text"></input>
-              <input type="submit"></input>
+              <input name="message" id="message" type="text"></input><br/>
+              <input type="submit" value="Send Message"></input>
           </form>   
           <div id="posts">
             {this.state.posts.map((d,idx)=>{
                     return (
-                    <p>{d.message}</p>
+                      <div key={idx}>
+                        <p>{d.name}: {d.message}</p>
+                      </div>
                     )
                 })}
           </div>

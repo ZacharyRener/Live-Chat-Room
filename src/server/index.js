@@ -10,25 +10,26 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('dist'));
 
+
+let posts = []
+
 // Beautiful post 
 app.post('/message', (req, res) => {
 
     // Recieving post parameters requires body-parser 
     console.log('New Message: ' + req.body.message)
-    prompt.start()
-    prompt.get( ['message'], (err, result) => {
+    console.log('From: ', req.body.name)
 
-        if(err) { return onErr(err); }
-        res.send(result.message)
-        console.log('Message sent\n') 
-
-    } )
+    posts = [...posts, 
+        {"message": req.body.message,
+         "name": req.body.name }
+      ]
 
 })
 
-app.get('/test', (req, res) => {
+app.get('/messages', (req, res) => {
 
-    res.send("Test success!")
+    res.json(posts)
 
 })
 

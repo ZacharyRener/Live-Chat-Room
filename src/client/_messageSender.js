@@ -14,7 +14,7 @@ export default class Navbar extends Component {
   componentDidMount() {
 
     this.setState({name: "Zach"})
-    this.setState({ live: false })
+    this.setState({ live: true })
     this.setState({ endpoint: this.state.live ? '/message' : 'http://localhost/message' })
     this.setState({ getEndpoint: this.state.live ? '/messages' : 'http://localhost/messages' })
 
@@ -46,7 +46,9 @@ export default class Navbar extends Component {
 
     let userResponse = '';
 
-    axios.post(this.state.endpoint, {
+    console.log("Sending to", this.state.endpoint)
+    // change /message to this.state.endpoint, or localhost/message
+    axios.post("/message", {
         message: msg,
         name: _name
     })
@@ -74,7 +76,7 @@ export default class Navbar extends Component {
     return (
         <nav className="navbar navbar-dark fixed-bottom bg-dark flex-md-nowrap p-0 shadow">
             <a className="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Welcome, {this.state.name}</a>
-            <input id="message" className="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search" autoFocus/>
+            <input id="message" className="form-control form-control-dark w-100" type="text" placeholder="Type a message..." aria-label="Search" autoFocus/>
             <a href='' id='send' className='btn btn-primary' >Send</a>
         </nav>
     );

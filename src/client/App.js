@@ -3,6 +3,7 @@ import './app.css';
 import Messenger from './messenger.js';
 import Navbar from './_navbar.js';
 import MessageSender from './_messageSender.js';
+import './Webpack-Toolkit/dist/app.bundle.js';
 
 export default class App extends Component {
 
@@ -12,6 +13,8 @@ export default class App extends Component {
 
   componentDidMount() {
 
+    let title = document.querySelector('title')
+    title.innerHTML = window.location.hostname;
 
   }
 

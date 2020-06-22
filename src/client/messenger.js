@@ -7,7 +7,7 @@ export default class Messenger extends Component {
     super(props)
     this.state = {
       posts: [],
-      live: false,
+      live: true,
       endpoint: '',
       getEndpoint: '',
     }
@@ -16,7 +16,7 @@ export default class Messenger extends Component {
 
   componentDidMount() {
 
-    this.setState({ live: false })
+    this.setState({ live: true })
     this.setState({ endpoint: this.state.live ? '/message' : 'http://localhost/message' })
     this.setState({ getEndpoint: this.state.live ? '/messages' : 'http://localhost/messages' })
 
@@ -33,10 +33,12 @@ export default class Messenger extends Component {
       .then(data => {
 
         this.setState({posts: data})
+        let posts = document.getElementById("posts")
+        posts.scrollTop = posts.scrollHeight
 
       });
 
-    }, 100);
+    }, 1000);
 
   }
 

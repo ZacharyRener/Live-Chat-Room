@@ -1,0 +1,16 @@
+/**
+
+    This file is compiled along with any files imported 
+    by running the command "webpack" (no quotes) on the 
+    server in the theme directory.
+
+    You can run "webpack --watch" to auto-compile
+
+    Sass-loader compiles and adds the CSS inline to the 
+    <head>
+
+**/
+@import "~bootstrap/scss/bootstrap";
+
+@import 'variables';
+@import 'forms';

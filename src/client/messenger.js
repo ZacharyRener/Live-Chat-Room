@@ -21,7 +21,7 @@ export default class Messenger extends Component {
     var form = document.getElementById("sendMessage");
     form.addEventListener('submit', this.handleForm);
 
-    this.setState({ live: true })
+    this.setState({ live: false })
     this.setState({ endpoint: this.state.live ? '/message' : 'http://localhost/message' })
     this.setState({ getEndpoint: this.state.live ? '/messages' : 'http://localhost/messages' })
 
@@ -33,7 +33,7 @@ export default class Messenger extends Component {
 
     setInterval( () => {
 
-      fetch("/messages") 
+      fetch(this.state.getEndpoint) 
       .then(response => response.json())
       .then(data => {
 
@@ -54,7 +54,7 @@ export default class Messenger extends Component {
 
     let userResponse = '';
 
-    axios.post("/message", {
+    axios.post(this.state.endpoint, {
         message: msg,
         name: _name
     })
